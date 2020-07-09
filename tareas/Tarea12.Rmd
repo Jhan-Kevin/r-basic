@@ -1,0 +1,76 @@
+---
+title: 'Tarea 12: Estudio de notas según las carreras'
+author: "Jhan Kevin"
+date: "25/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Carga el conjunto de datos de la carpeta data llamado grades.txt en R y responde a las siguientes preguntas.
+
+```{r}
+
+df_grades <- read.table('../data/grades.txt')
+str(df_grades)
+head(df_grades)
+```
+
+### 1. Calcula la media, la mediana y la moda redondeada a dos cifras decimales de las notas numéricas de los exámenes tanto de forma conjunta como por estudio universitario. ¿En qué grupo observamos la nota más alta? ¿Qué grupo está por encima de la media de estudiantes?
+
+```{r Punto1-1}
+
+mean_conj <- mean(df_grades$nota, na.rm = TRUE)
+```
+
+La media aritmética conjunta es de `r round(mean_conj,2)`
+
+```{r Punto1-2}
+
+#Usando la función by
+x1 <- by(df_grades[,2],df_grades$estudio, FUN = mean, na.rm = TRUE)
+x1
+
+#Usando la función agregate
+aggregate(nota~estudio, data = df_grades, FUN = mean)
+```
+
+Los grupos de matemáticas e infromática se encuentran por encima de la media de los estudiantes, siendo los de matemáticas quienes tienen la media más alta, de `r max(x1)`. 
+
+### 2. ¿En qué grupo observamos más variación de notas? Justifica tu respuesta
+
+```{r Punto2}
+
+#Usando la función by
+x1 <- by(df_grades[,2],df_grades$estudio, FUN = sd, na.rm = TRUE)
+x1
+
+#Usando la función agregate
+aggregate(nota~estudio, data = df_grades, FUN = sd, na.rm = TRUE)
+```
+
+En el grupo de `r names(x1[which(x1 == max(x1))])` se tiene la mayor desviación estándar
+
+### 3. ¿Hay mucha diferencia entre el grupo que has respondido en el ejercicio 1 y en el ejercicio 2? Intenta dar una explicación objetiva del suceso
+
+```{r Punto3}
+
+
+```
+
+
+### 4. Dibuja en un único gráfico los cuatro diagramas de caja, uno para cada grupo. Añade así mismo la nota media, pon nombre, título y color al gráfico para documentar el gráfico correctamente.
+
+
+
+### 5. ¿Observas algunos valores atípicos en el boxplot anterior? ¿A qué grupo pertence?
+
+
+
+### 6. Indica a partir del boxplot anterior en qué grupo observamos más variedad de notas.
+
+
+
+### 7. En base a todo lo anterior, ¿puedes afirmar de forma estadística que el examen de carrera ha ido mejor en algún estudio que en los demás? 

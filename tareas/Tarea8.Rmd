@@ -1,0 +1,101 @@
+---
+title: 'Tarea 8: Manejando Data Frames con R'
+author: "Jhan Kevin"
+date: "5/5/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Carga en R o en Python el CSV de la web http://winterolympicsmedals.com/medals.csv y responde a las preguntas de la tarea.
+
+```{r CargaDatos}
+
+medals <- read.csv('../tareas/medals.csv')
+str(medals)
+```
+
+El data frame contiene información sobre las medallas ganadas en los juegos olímpicos de invierno.
+
+### ¿Cuantos deportistas aparecen en el data frame?
+
+Los datos no discriminan por deportista, no es posible establecer si hay deportistas repeditos, por lo cual se asume que cada medalla fue ganada por un deportista diferente. Asi el número de filas será el número de deportistas.
+
+```{r punto1, echo=TRUE}
+
+n_dep <- nrow(medals)
+
+```
+
+Aparecen `r n_dep` deportistas.
+
+### ¿Cuantos han ganado medallas de oro, cuantos de plata y cuantos de bronce?
+
+```{r punto2, echo=TRUE}
+
+# Usando subset
+n_gold <- dim(subset(medals, Medal == "Gold"))[1]
+
+#  Otra manera
+silver <- medals[medals$Medal=='Silver',]
+n_silver <- nrow(silver)
+
+bronze <- medals[medals$Medal=='Bronze',]
+n_bronze <- nrow(bronze)
+```
+
++ `r n_gold` han ganado medallas de oro.
++ `r n_silver` han ganado medallas de plata.
++ `r n_bronze` han ganado medallas de bronce.
+
+### ¿En cuantos lugares se han hecho olimpiadas de invierno?
+
+El data frame contiene una columna de ciudades, almacenada como factor. Se debe conar la cantidad de niveles.
+
+```{r punto3, echo=TRUE}
+
+n_city <- length(unique(medals$City))
+```
+
+En `r n_city` ciudades.
+
+
+### ¿Cuantos hombres y cuantas mujeres hay?
+
+El df contiene una columna que clasifica los deportistas por género.
+
+```{r punto4, echo=TRUE}
+
+n_men <- dim(subset(medals, Event.gender == "M"))[1]
+n_wemen <- dim(subset(medals, Event.gender == "W"))[1]
+n_ind <- dim(subset(medals, Event.gender == "X"))[1]
+```
+
+Se tiene registro de `r n_men` hombres, `r n_wemen` mujeres y `r n_ind` indecisos.
+
+### ¿En qué año participaron más deportistas?
+
+```{r punto5, echo=TRUE}
+
+max_year <- max(aggregate(cbind(Year)~Year,
+                data = medals,
+                function(x){max(NROW(x))}
+                ))
+```
+
+En el año `r max_year`
+
+### El campo NOC indica el país del ganador de la medalla. ¿Qué país puede presumir de haber ganado más medallas de oro en los juegos de invierno entre 1960 y 1996?
+
+```{r punto6, echo=TRUE}
+
+med_1960_1996 <- subset(medals, Year <= '1996' & Year >= '1960' & Medal == 'Gold')
+med_1960_1996 <- table(med_1960_1996$NOC)
+med_1960_1996[med_1960_1996 == max(med_1960_1996)]
+```
+
+

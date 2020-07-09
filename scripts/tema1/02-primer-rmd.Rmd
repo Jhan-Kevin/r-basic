@@ -3,6 +3,8 @@ title: "Mi primer Markdown"
 author: "Curso de Álgebra Lineal"
 date: "11/12/2018"
 output:
+  pdf_document: 
+    keep_tex: yes
   html_document:
     df_print: paged
 ---

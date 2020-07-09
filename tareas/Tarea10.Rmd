@@ -1,0 +1,98 @@
+---
+title: 'Tarea 10: Representación gráfica'
+author: "Jhan Kevin"
+date: "19/5/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Cargar datos
+
+Instala y carga el paquete `MASS`.
+
+En el hay una tabla de datos llamada birthwt sobre factores que pueden incidir en el peso de los niños al nacer.
+
+```{r CargaDatos}
+
+#install.packages("MASS")
+library(MASS)
+df_baby <- birthwt
+```
+
+Utiliza `str()` y `head()` para explorar la estructura, y con `help()`, mirar el significado de cada variable.
+
+```{r VerDatos}
+
+str(df_baby)
+head(df_baby)
+#?birthwt
+```
+
+### 1. Calcula una tabla de frecuencias relativas marginales de los pares (raza de la madre, peso inferior a 2.5 kg o no) que permita ver si la raza de la madre influye en el peso del bebé.
+
+```{r Punto1-1}
+
+raza <- factor(df_baby$race, labels = c('Blanca','Nigga','Otro'))
+menos25 <- factor(df_baby$low, labels = c('No','Si'))
+
+tb1 <- ftable(raza, menos25)
+```
+
+La tabla de frecuencias relativas debe ser dicriminando la raza, la cual es
+
+```{r Punto1-2}
+
+round(prop.table(tb1, margin = 1),1)
+```
+
+### 2. Dibuja un diagrama de mosaico de la tabla del ejercicio anterior.
+
+```{r Punto2}
+
+mosaicplot(prop.table(table(raza, menos25), margin = 1), 
+           main = 'Proporción de bebes que nacen pesando\n menos de 2.5 kg discriminado por la raza de la madre',
+           xlab = 'Raza', ylab = 'Bebe pesa menos de 2.5kg',
+           color = c('red','green'))
+```
+
+Si dentro de la función `mosaicplot()` se usa la tabla `tb1` creada anteriormente con `ftable()`, se tendrá un error con las etiquetas. Por lo cual para realizar la grafica se debe utilizar `table()`.
+
+### 3. Dibuja un diagrama bidimensional de barras, con las barras organizadas en bloques, que permita visualizar la información de los ejercicios anteriores. Aprovecha para nombres adecuados a los bloques, colores a las barras, y añadir una leyenda que explique qué representa cada barra.
+
+```{r Punto3}
+
+barplot(prop.table(table(raza, menos25), margin = 1),
+        beside = TRUE, legend.text = TRUE,
+        main = 'Proporción de bebes que nacen pesando\n menos de 2.5 kg   discriminado por la raza de la madre',
+        xlab = 'Bebe pesa menos de 2.5kg', ylab = 'Proporción',
+        col = c('beige','black','gray'))
+```
+
+### 4. ¿Se puede obtener alguna conclusión de la tabla y el diagrama de barras anterior? Argumenta tu respuesta
+
+Según los datos, la raza de la madre si influye en el peso del recién nacido. COntrastan la raza blanca y el resto, teniendo menos proporción de recién nacidos con peso por debajo de los 2.5 kg en el primer caso.
+
+### 5. Repite los cuatro ejercicios anteriores para los pares (madre fumadora o no, peso inferior a 2.5 kg o no) y para los pares (madre hipertensa o no, peso inferior a 2.5 kg o no.
+
+
+### 6. Calcula una tabla de frecuencias relativas marginales de las ternas (raza de la madre, madre fumadora o no, peso inferior a 2.5 kg o no) que permita ver si la raza de la madre y su condición de fumadora o no fumadora influyen en el peso del bebé.
+
+```{r}
+fuma <- factor(df_baby$smoke, labels = c('No','Si'))
+
+round(prop.table(table(raza,fuma,menos25), margin = c(1,2)),2)
+```
+
+
+### 7. Dibuja un diagrama de mosaico de la tabla del ejercicio anterior.
+
+```{r}
+
+mosaicplot(table(raza,fuma,menos25))
+```
+

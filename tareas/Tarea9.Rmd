@@ -1,0 +1,98 @@
+---
+title: 'Tarea 9: Ejercicio completo de Data Frames'
+author: "Jhan Kevin"
+date: "14/5/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Carga el CSV de la carpeta de datos del tema llamado run.csv y responde a las siguientes preguntas.
+
+```{r CargarDatos}
+df_run <- read.csv('../data/run.csv')
+str(df_run)
+head(df_run)
+```
+
+### 1. Indica cuantos estudiantes formaron parte del estudio de deporte
+
+```{r Punto1}
+
+n <- nrow(df_run)
+
+# Otra forma
+# dim(df_run)[1]
+```
+
+Parcticiparon `r n` estudiantes
+
+### 2. Indica cuantos individuos son hombres y cuantos son mujeres
+
+```{r Punto2}
+
+nH <- nrow(subset(df_run, genero == "H"))
+nM <- dim(subset(df_run, genero == "M"))[1]
+```
+
+`r nH` son hombres y `r nM` son mujeres.
+
+### 3. Calcula el porcentaje medio de variación del pulso por minuto entre antes y después de hacer ejercicio y compara el valor de los que hacen ejercicio habitualmente y los que no. ¿Observas mucha diferencia?
+
+```{r Punto3.1}
+
+xvar <- df_run$pulso.despues - df_run$pulso.antes
+var_med <- mean(xvar)
+
+xvarp <- (df_run$pulso.despues - df_run$pulso.antes)/df_run$pulso.antes * 100
+varp_med <- mean(xvarp)
+```
+
+La variación media es de `r round(var_med, 1)`
+
+En promedio, el pulso aumentó `r round(var_med, 1)`, que corresponde a un `r round(varp_med, 1)`% luego de la actividad física.
+
+```{r Punto3.2}
+
+df_run$dif.pulso <- df_run$pulso.despues - df_run$pulso.antes
+str(df_run)
+
+dif_si <-  df_run[df_run$hace.deporte == 'si', 'dif.pulso']
+m_si <- mean(dif_si)
+mp_si <- mean(dif_si/df_run[df_run$hace.deporte == 'si', 'pulso.antes']) * 100
+
+dif_no <- df_run[df_run$hace.deporte == 'no', 'dif.pulso']
+m_no <- mean(dif_no)
+mp_no <- mean(dif_no/df_run[df_run$hace.deporte == 'no', 'pulso.antes']) * 100
+```
+
+Entre los que si hacen deporte se tiene una variación de `r round(m_si,1)`, que corresponde a un `r round(mp_si,1)`%. Para los que no hacen deporte la veriación es de `r round(m_no,1)`, correspondiente a un `r round(mp_no,1)`%
+
+### 4. Calcula el porcentaje medio de variación del pulso por minuto entre antes y después de hacer ejercicio  para los estudiantes que hacen ejercicio habitualmente y compara el valor de los hombres con el de las mujeres. ¿Observas mucha diferencia?
+
+```{r Punto4}
+
+dif_si_H <-  df_run[df_run$hace.deporte == 'si' & df_run$genero == 'H', 'dif.pulso']
+m_si_H <- mean(dif_si_H)
+mp_si_H <- mean(dif_si_H/df_run[df_run$hace.deporte == 'si'  & df_run$genero == 'H', 'pulso.antes']) * 100
+
+dif_si_M <-  df_run[df_run$hace.deporte == 'si' & df_run$genero == 'M', 'dif.pulso']
+m_si_M <- mean(dif_si_M)
+mp_si_M <- mean(dif_si_M/df_run[df_run$hace.deporte == 'si'  & df_run$genero == 'M', 'pulso.antes']) * 100
+```
+
+Para los hombres que hacen ejercicio, la variación media es de `r round(m_si_H,1)` equivalente a un `r round(mp_si_H,1)`%. En las mujeres la variación media es de `r round(m_si_M,1)` que corresponde al `r round(mp_si_M,1)`%
+
+### 5. Calcula el porcentaje medio de variación del pulso por minuto entre antes y después de hacer ejercicio para los estudiantes que no hacen ejercicio habitualmente y compara el valor de los fumadores con los no fumadores. ¿Observas mucha diferencia?
+
+### 6. Calcula el porcentaje medio de variación del pulso por minuto entre antes y después de hacer ejercicio de todos los estudiantes según el tipo de actividad física que realizan. ¿Observas alguna diferencia?
+
+```{r Punto6}
+
+
+```
+

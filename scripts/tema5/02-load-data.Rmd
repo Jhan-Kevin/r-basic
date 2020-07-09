@@ -54,7 +54,7 @@ str(df3)
 # Guardar un DF
 
 ```{r}
-write.table(df3, file = "../../data/olive.txt", dec = ".")
+write.table(df3, file = "?/../data/olive.txt", dec = ".")
 df4 = read.table("../../data/olive.txt", header = TRUE, dec = ".")
 head(df4)
 ```

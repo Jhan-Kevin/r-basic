@@ -1,0 +1,95 @@
+---
+title: "Ejercicios estructuras de datos"
+author: "Jhan Kevin"
+date: "13/5/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ejercicio 1
+
+Dad la entrada (2,2) de $A \cdot (A+ A) \cdot A$, con 
+
+$$A = 
+\begin{pmatrix}
+1 & 3 \\
+2 & 4
+\end{pmatrix}$$
+
+```{r punto1, results='markup'}
+
+A = rbind(c(1,3),c(2,4))
+A
+
+AA = A %*% (A+A) %*% A
+AA
+```
+La entrada (2,2) de la matriz solicitada es  `r AA[2,2]`
+
+## Ejercicio 2
+Dad los valores propios de la matriz
+$$B = 
+\begin{pmatrix}
+  2 & 4 & -6\\
+  0 & 0 & 3\\
+  0 & -2 & 5
+\end{pmatrix}$$
+
+```{r punto2}
+
+B = rbind(c(2,4,-6), c(0,0,3), c(0,-2,5))
+B
+
+eigen(B)
+```
+
+Los valores propios de B son `r eigen(B)$values`
+
+## Ejercicio 3
+
+Dad, redondeando a 3 cifras decimales, los vectores propios de la matriz
+
+$$B = 
+\begin{pmatrix}
+  -48 & 35 & 12\\
+  -134 & 95 & -32\\
+  -194 & 133 & -44
+\end{pmatrix}$$
+
+```{r punto3, results='markup'}
+C = rbind(c(2,4,-6), c(0,0,3), c(0,-2,5))
+C
+
+eigen(C)
+```
+
+Los vectores propios de C son
+
+```{r, echo=FALSE}
+round(eigen(C)$vectors,3)
+```
+
+## Ejercicio 4
+
+Dad el rango de la matriz
+
+$$C = 
+\begin{pmatrix}
+  -2 & -8 & -2 & 3\\
+  -3 & -6 & -1 & 2\\
+  -9 & -22 & -3 & 7\\
+  -18 & -44 & -8 & 15
+\end{pmatrix}$$
+
+```{r punto 4, results='markup'}
+
+D = rbind(c(-2,-8,-2,3), c(-3,-6,-1,2), c(-9,-22,-3,7), c(-18,-44,-8,15))
+D
+
+qr(D)
+```
+
+El rango de C es `r qr(D)$rank`
